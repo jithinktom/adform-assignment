@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './Components/Header/Header';
+import MainContainer from './Containers/MainContainer/MainContainer';
+import Footer from './Components/Footer/Footer';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
+
+/**
+ * This app creates the structure of the application.
+ * It is wrapped with a theme provider.
+ */
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <div className="App">
+        <Header></Header>
+        <MainContainer></MainContainer>
+        <Footer></Footer>
+      </div>
+    </MuiThemeProvider>
   );
 }
 

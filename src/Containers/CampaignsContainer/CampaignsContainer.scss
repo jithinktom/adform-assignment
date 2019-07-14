@@ -1,0 +1,18 @@
+@import '../../Styles/variables';
+
+.active-flag {
+    display: inline-block;
+    padding: 2px 10px;
+    color: $white;
+    min-width: 70px;
+    text-align: center;
+    font-size: 13px;
+
+    &.active {
+        background-color: $success;
+    }
+
+    &.inactive {
+        background-color: $failure;
+    }
+}

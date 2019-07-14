@@ -1,9 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+import { shallow } from "enzyme";
+import App from "./App";
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('Component should be rendered properly', () => {
+  it('Render component', () => {
+    expect(shallow(<MuiThemeProvider theme={theme}>
+      <App />
+    </MuiThemeProvider>)).toHaveLength(1);
+  });
 });
