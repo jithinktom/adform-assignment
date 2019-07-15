@@ -76,6 +76,7 @@ class SearchFilter extends React.Component {
                     style={Styles.Input}
                     type="date"
                     defaultValue={this.state.startDate}
+                    InputProps={{ inputProps: { max: this.state.endDate || "" } }}
                     InputLabelProps={{
                         shrink: true,
                     }}
