@@ -12,13 +12,13 @@ import theme from './theme';
 
 function App() {
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className="App">
+    <div className="App">
+      <MuiThemeProvider theme={theme}>
         <Header></Header>
         <MainContainer></MainContainer>
         <Footer></Footer>
-      </div>
-    </MuiThemeProvider>
+      </MuiThemeProvider>
+    </div>
   );
 }
 

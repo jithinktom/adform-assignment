@@ -16,7 +16,7 @@ import clone from 'clone';
  * to the form it should be displayed and pass down it to ListComponent.
  */
 
-class CampaignsContainer extends React.Component {
+export class CampaignsContainer extends React.Component {
 
     state = {
         campaigns: []
@@ -51,6 +51,8 @@ class CampaignsContainer extends React.Component {
 	 */
 
     addCampaigns = (data) => {
+        console.log(data)
+        console.log(Array.isArray(data))
         //Console message displayed if the entered data is not an array.
         if (!Array.isArray(data))
             console.log("Not an array!")
@@ -91,8 +93,8 @@ class CampaignsContainer extends React.Component {
         let validData = clone(campaigns)
         validData.forEach(item => {
             // formatting budget values.
-            if(item.Budget && !isNaN(item.Budget)){
-                item.Budget = Math.abs(item.Budget) > 999 ? ((Math.abs(item.Budget)/1000).toFixed(1)) + 'k' : Math.abs(item.Budget)
+            if (item.Budget && !isNaN(item.Budget)) {
+                item.Budget = Math.abs(item.Budget) > 999 ? ((Math.abs(item.Budget) / 1000).toFixed(1)) + 'k' : Math.abs(item.Budget)
             }
             let isActive = moment().isBetween(moment(item.startDate, DATE_FORMAT), moment(item.endDate, DATE_FORMAT))
             item.active = <span className={`active-flag ${isActive ? 'active' : 'inactive'}`}>{isActive ? 'active' : 'inactive'}</span>
@@ -104,37 +106,42 @@ class CampaignsContainer extends React.Component {
      * This method filters the data according to the search params.
      */
 
-    filter = (filterData) => {
+    filter = (filterData, error) => {
         // Campaigns will be modified and added with active flag. The modified data 
         // is used for filtering.
-        let filteredData = this.modifyData(this.props.campaigns)
-        filteredData = filteredData.filter(campaign => {
-            let include = true;
-            if (filterData.startDate &&
-                moment(campaign.endDate, DATE_FORMAT).isBefore(moment(filterData.startDate, YEAR_FORMAT)))
-                include = false
-            if (filterData.endDate &&
-                moment(filterData.endDate, YEAR_FORMAT).isBefore(moment(campaign.startDate, DATE_FORMAT)))
-                include = false
-            if (filterData.searchText) {
-                let match = null
-                try {
-                    let searchText = filterData.searchText.toLowerCase()
-                    var re = new RegExp(searchText, 'g');
-                    match = campaign.name.toLowerCase().match(re);
-                }
-                catch (err) {
-                    match = null
-                }
-                if (!match)
+        if (error) {
+            this.setState({ campaigns: [] })
+        }
+        else {
+            let filteredData = this.modifyData(this.props.campaigns)
+            filteredData = filteredData.filter(campaign => {
+                let include = true;
+                if (filterData.startDate &&
+                    moment(campaign.endDate, DATE_FORMAT).isBefore(moment(filterData.startDate, YEAR_FORMAT)))
                     include = false
-            }
-            if (include)
-                return campaign
-        })
-        this.setState({
-            campaigns: filteredData
-        })
+                if (filterData.endDate &&
+                    moment(filterData.endDate, YEAR_FORMAT).isBefore(moment(campaign.startDate, DATE_FORMAT)))
+                    include = false
+                if (filterData.searchText) {
+                    let match = null
+                    try {
+                        let searchText = filterData.searchText.toLowerCase()
+                        var re = new RegExp(searchText, 'g');
+                        match = campaign.name.toLowerCase().match(re);
+                    }
+                    catch (err) {
+                        match = null
+                    }
+                    if (!match)
+                        include = false
+                }
+                if (include)
+                    return campaign
+            })
+            this.setState({
+                campaigns: filteredData
+            })
+        }
     }
 
     render() {

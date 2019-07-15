@@ -12,7 +12,9 @@ import { DATE_RANGE_ERROR, YEAR_FORMAT } from '../../Constants';
 
 const Styles = {
     Input: {
-        marginRight: '5%'
+        marginRight: '5%',
+        width: '100%',
+        maxWidth: '220px'
     }
 }
 
@@ -34,10 +36,7 @@ class SearchFilter extends React.Component {
         this.setState({
             [name]: event.target.value
         }, () => {
-            if (this.checkErrors().error) { }
-            else {
-                this.props.filter(this.state)
-            }
+            this.props.filter(this.state, this.checkErrors().error)
         })
     }
 
@@ -91,6 +90,7 @@ class SearchFilter extends React.Component {
                     error={this.checkErrors().error}
                     helperText={this.checkErrors().text}
                     onChange={this.handleChange('endDate')}
+                    InputProps={{ inputProps: { min: this.state.startDate || "" } }}
                     InputLabelProps={{
                         shrink: true,
                     }}

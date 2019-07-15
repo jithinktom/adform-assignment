@@ -40,6 +40,17 @@ describe('Component should be rendered properly', () => {
         wrapper.setState({ startDate, endDate, searchText });
 		process.nextTick(() => {
             expect(wrapper.find('.MuiInputBase-formControl').at(1).hasClass('Mui-error'));
+            expect(filter).toBeCalled()
+			done();
+		});
+    });
+    
+    it("Form prevents default action on submit", (done) => {
+        let preventDefault = jest.fn()
+        const wrapper = mount(<SearchFilter filter={filter} />)
+        wrapper.find('form').simulate('submit', { preventDefault: preventDefault})
+		process.nextTick(() => {
+            expect(preventDefault).toBeCalled()
 			done();
 		});
 	});
